@@ -36,6 +36,8 @@ const SignIn: React.FC = () => {
       supabase
     );
 
+    console.log(response);
+
     if (error && error.message === "Invalid login credentials") {
       showSnackMessage("Dados de usuário inválidos.");
     } else {
