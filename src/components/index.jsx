@@ -9,6 +9,7 @@ export { default as CustomList } from "./custom/customList";
 export { default as Sleep } from "./custom/actions/sleep";
 export { default as Eat } from "./custom/actions/eat";
 export { default as Diaper } from "./custom/actions/diaper";
+export { default as LanguageSelector } from "./custom/languageSelector";
 export { default as DatePicker } from "./datePicker";
 export { default as DateTimePicker } from "./dateTimePicker";
 export { default as Checkbox } from "./checkbox";

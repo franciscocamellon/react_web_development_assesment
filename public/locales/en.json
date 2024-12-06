@@ -16,7 +16,7 @@
   "user-creation-success": "User created successfully!!!",
   "english": "English",
   "spanish": "Spanish",
-  "portugues": "Portuguese",
+  "portuguese": "Portuguese",
   "settings": "Settings",
   "dashboard": "Dashboard",
   "sleep": "Sleep",
@@ -56,5 +56,6 @@
   "to": "To",
   "days": "Day(s)",
   "add-some": "Add something",
-  "logout": "Logout"
+  "logout": "Logout",
+  "language": "Language"
 }

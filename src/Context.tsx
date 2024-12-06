@@ -13,6 +13,8 @@ import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
+import { ThemeProvider, useMediaQuery } from "@mui/material";
+import { darkTheme, lightTheme } from "./theme";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -40,13 +42,14 @@ const supabase = createClient(
 const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   const { t: translate, i18n } = useTranslation();
   const timeoutDuration = 6000;
+  const isDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
 
   const [snackOpen, setSnackOpen] = useState(false);
   const [snackMessage, setSnackMessage] = useState("");
   const [alertSeverity, setAlertSeverity] = useState("info");
   const [alertMessage, setAlertMessage] = useState("");
 
-  const changeLanguage = (lang) => {
+  const changeLanguage = (lang: string) => {
     i18n.changeLanguage(lang);
     localStorage.setItem("language", lang);
   };
@@ -92,31 +95,33 @@ const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   return (
     <div className="app-background">
       <AppContext.Provider value={sharedState}>
-        {children}
+        <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
+          {children}
 
-        <Snackbar
-          autoHideDuration={timeoutDuration}
-          onClose={handleClose}
-          open={snackOpen}
-          message={snackMessage}
-        />
+          <Snackbar
+            autoHideDuration={timeoutDuration}
+            onClose={handleClose}
+            open={snackOpen}
+            message={snackMessage}
+          />
 
-        {alertMessage ? (
-          <Grid
-            container={true}
-            sx={{
-              position: "absolute",
-              left: 0,
-              bottom: 0,
-              width: "100%",
-              padding: 2,
-            }}
-          >
-            <Grid item={true} size={{ xs: 12 }}>
-              <Alert severity={alertSeverity}>{alertMessage}</Alert>
+          {alertMessage ? (
+            <Grid
+              container={true}
+              sx={{
+                position: "absolute",
+                left: 0,
+                bottom: 0,
+                width: "100%",
+                padding: 2,
+              }}
+            >
+              <Grid item={true} size={{ xs: 12 }}>
+                <Alert severity={alertSeverity}>{alertMessage}</Alert>
+              </Grid>
             </Grid>
-          </Grid>
-        ) : null}
+          ) : null}
+        </ThemeProvider>
       </AppContext.Provider>
     </div>
   );

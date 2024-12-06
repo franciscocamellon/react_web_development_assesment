@@ -1,5 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { AppBar, Button, DatePicker, Grid, TextField } from "../components";
+import {
+  AppBar,
+  Button,
+  DatePicker,
+  Grid,
+  TextField,
+  Box,
+  Typography,
+  LanguageSelector,
+} from "../components";
 import { useAppContext } from "../Context";
 import { get, save } from "../services/database";
 import { handleInputChange } from "../utils/actions";
@@ -8,16 +17,25 @@ import { signOut } from "../services/authentication";
 import { useNavigate } from "react-router-dom";
 
 const Settings: React.FC = () => {
-  const { translate, supabase, showAlertMessage } = useAppContext();
+  const { translate, supabase, showAlertMessage, changeLanguage } =
+    useAppContext();
   const navigate = useNavigate();
   const user = getUser();
   const [data, setData] = useState({});
+  const [language, setLanguage] = useState(localStorage.getItem("language"));
 
   const loadData = async () => {
     const result = await get("profile_students", [
       { field: "user_id", value: user.id },
     ]);
     setData(result);
+  };
+
+  const loadLanguage = () => {
+    if (language) {
+      changeLanguage(language);
+    }
+    console.log("settings", language);
   };
 
   const logout = async () => {
@@ -37,6 +55,10 @@ const Settings: React.FC = () => {
     loadData();
   }, []);
 
+  useEffect(() => {
+    loadLanguage();
+  }, [language]);
+
   return (
     <>
       <AppBar title={translate("settings")} />
@@ -46,13 +68,20 @@ const Settings: React.FC = () => {
         sx={{ ...styles.boxAdjustment, ...styles.centerBox }}
       >
         <Grid sx={styles.marginTop} item={true} size={{ xs: 12 }}>
+          <LanguageSelector
+            language={language}
+            setLanguage={setLanguage}
+            translate={translate}
+          />
+        </Grid>
+        <Grid sx={styles.marginTop} item={true} size={{ xs: 12 }}>
           <TextField
             placeholder={translate("name")}
             fullWidth={true}
             onChange={(event) =>
               handleInputChange("name", event.target.value, data, setData)
             }
-            value={data.name}
+            value={data?.name}
           />
         </Grid>
         <Grid sx={styles.marginTop} item={true} size={{ xs: 12 }}>
@@ -62,7 +91,7 @@ const Settings: React.FC = () => {
             onChange={(event) =>
               handleInputChange("height", event.target.value, data, setData)
             }
-            value={data.height}
+            value={data?.height}
           />
         </Grid>
         <Grid sx={styles.marginTop} item={true} size={{ xs: 12 }}>
@@ -72,7 +101,7 @@ const Settings: React.FC = () => {
             onChange={(event) =>
               handleInputChange("weight", event.target.value, data, setData)
             }
-            value={data.weight}
+            value={data?.weight}
           />
         </Grid>
         <Grid sx={styles.marginTop} item={true} size={{ xs: 12 }}>
