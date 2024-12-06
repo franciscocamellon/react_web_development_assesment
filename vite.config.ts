@@ -5,7 +5,7 @@ import liveReload from "vite-plugin-live-reload";
 export default defineConfig(() => {
   return {
     build: {
-      outDir: "dist",
+      outDir: "build",
     },
     plugins: [react(), liveReload("src/**/*.{js,jsx,ts,tsx}")],
   };
