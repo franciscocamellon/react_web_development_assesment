@@ -41,9 +41,14 @@ const SignIn: React.FC = () => {
     if (error && error.message === "Invalid login credentials") {
       showSnackMessage("Dados de usuário inválidos.");
     } else {
-      localStorage.setItem("session", JSON.stringify(response.session));
-      localStorage.setItem("user", JSON.stringify(response.user));
-      navigate("/");
+      if (response && response.session && response.user) {
+        localStorage.setItem("session", JSON.stringify(response.session));
+        localStorage.setItem("user", JSON.stringify(response.user));
+        navigate("/");
+      } else {
+        console.error("Sessão ou usuário nulos:", response);
+        showSnackMessage("Erro na autenticação. Tente novamente.");
+      }
     }
   };
 
